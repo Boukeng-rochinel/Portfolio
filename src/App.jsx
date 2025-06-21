@@ -1,5 +1,10 @@
 import { useState } from "react";
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+// Import specific icons from the respective packages
+import { faUser, faEnvelope, faCog } from '@fortawesome/free-solid-svg-icons'; // For solid icons
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 // Custom SVG icons as components
 const IconGitHub = () => (
@@ -133,20 +138,24 @@ export default function Portfolio() {
     description:
       "I build exceptional digital experiences with modern technologies. Focused on creating intuitive, responsive web applications that solve real problems.",
     bio: "With over 5 years of experience in web development, I specialize in React, Node.js, and modern frontend frameworks. I'm passionate about clean code, user experience, and continuous learning. When not coding, you can find me hiking, reading sci-fi novels, or experimenting with new technologies.",
-    location: "San Francisco, CA",
-    email: "alex@example.com",
-    github: "github.com/alexjohnson",
+    location: "Douala, Cameroon",
+    email: "boukengrochinel15@gmail.com",
+    github: "https://github.com/Boukeng-rochinel",
     linkedin: "linkedin.com/in/alexjohnson",
   };
 
   const skills = [
     {
-      name: "Frontend",
-      techs: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Redux"],
+      name: "Web development",
+      techs: ["React", "TypeScript", "Flutter", "Node.js", "Express", "MongoDB"],
     },
     {
-      name: "Backend",
-      techs: ["Node.js", "Express", "Python", "PostgreSQL", "MongoDB"],
+      name: "Mobile Development",
+      techs: ["Flutter", "Node.js", "PostgreSQL","Firebase"],
+    },
+    {
+      name: "AI (Artificial Intelligence)",
+      techs: ["Python", "scikit-learn"],
     },
     {
       name: "Tools",
@@ -156,10 +165,17 @@ export default function Portfolio() {
 
   const projects = [
     {
-      title: "E-commerce Platform",
+      title: "IGwork",
       description:
-        "A full-stack e-commerce application with payment processing, user authentication, and inventory management.",
-      techs: ["React", "Node.js", "MongoDB", "Stripe API"],
+        "a freelancing platform designed specifically for Cameroon. The platform aims to connect skilled professionals with job providers while addressing key challenges such as payment restrictions, trust issues, and high service fees on global platforms.",
+      techs: ["React", "Node.js", "MongoDB", "Fapship"],
+      link: "#",
+    },
+    {
+      title: "Car Fault Diagnosis APP",
+      description:
+        "A mobile application that uses machine learning to diagnose car faults based on dashboard warning lights and symptoms. It provides users with a list of possible issues and recommended actions.",
+      techs: ["Flutter", "Node.js", "Firebase", "Dart"],
       link: "#",
     },
     {
@@ -170,51 +186,30 @@ export default function Portfolio() {
       link: "#",
     },
     {
-      title: "Healthcare Appointment System",
+      title: "Electricity Management and monitoring System for cameroon",
       description:
-        "HIPAA-compliant scheduling application for healthcare providers with automated reminders.",
-      techs: ["React", "Express", "PostgreSQL", "Twilio API"],
+        "A mobile application that allows users to monitor and manage their electricity consumption, pay bills, and receive notifications about outages.",
+      techs: ["React Native", "Node.js", "Postgrel", "Express"],
       link: "#",
     },
   ];
 
   const experience = [
     {
-      company: "TechNova Solutions",
-      role: "Senior Frontend Developer",
-      period: "2022 - Present",
-      description:
-        "Lead development of customer-facing web applications using React and TypeScript. Improved load time by 40% through code optimization.",
-      achievements: [
+      company: "Myle-Africa",
+      role: "Intern Full Stack Developer",
+      period: "2025",
+      achievements:
+        [
+        "Worked on a constructing a mailserver using dovecot and postfix and integrating it with a webmail client",
         "Architected new component library used across 5 products",
-        "Mentored junior developers",
-        "Implemented CI/CD pipeline",
+        "Added some security features to the mailserver like fail2ban and fail2web, spamassassin",
+        "Implemented a new feature that allows users to send and receive emails using their own domain names",
+        "Collaborated with the team to design and implement a new feature that allows users to manage their email accounts using a web interface",
+
       ],
     },
-    {
-      company: "DataViz Inc.",
-      role: "Full Stack Developer",
-      period: "2019 - 2022",
-      description:
-        "Developed data visualization tools and dashboards for enterprise clients using React, D3, and Node.js.",
-      achievements: [
-        "Built real-time analytics dashboard",
-        "Optimized database queries",
-        "Led migration to microservices",
-      ],
-    },
-    {
-      company: "Startup Innovations",
-      role: "Junior Developer",
-      period: "2017 - 2019",
-      description:
-        "Contributed to multiple client projects using various web technologies.",
-      achievements: [
-        "Implemented responsive designs",
-        "Developed RESTful APIs",
-        "Created automated testing suite",
-      ],
-    },
+    
   ];
 
   const scrollToSection = (section) => {
@@ -342,30 +337,30 @@ export default function Portfolio() {
                   📍 {personalInfo.location}
                 </p>
               </div>
-              <div className="flex space-x-4">
-                <a
-                  href={`https://${personalInfo.github}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-700 hover:text-indigo-600"
-                >
-                  <IconGitHub />
-                </a>
-                <a
-                  href={`https://${personalInfo.linkedin}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-slate-700 hover:text-indigo-600"
-                >
-                  <IconLinkedIn />
-                </a>
-                <a
-                  href={`mailto:${personalInfo.email}`}
-                  className="text-slate-700 hover:text-indigo-600"
-                >
-                  <IconMail />
-                </a>
-              </div>
+              <div className="flex space-x-6">
+              <a
+                href={`https://${personalInfo.github}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-300 hover:text-white"
+              >
+             <FontAwesomeIcon icon={faGithub} /> 
+              </a>
+              <a
+                href={`https://${personalInfo.linkedin}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-300 hover:text-white"
+              >
+                <FontAwesomeIcon icon={faLinkedin} /> 
+              </a>
+              <a
+                href={`mailto:${personalInfo.email}`}
+                className="text-slate-300 hover:text-white"
+              >
+                <FontAwesomeIcon icon={faEnvelope} />
+              </a>
+            </div>
             </div>
           </div>
         </div>
@@ -573,7 +568,7 @@ export default function Portfolio() {
                 rel="noopener noreferrer"
                 className="text-slate-300 hover:text-white"
               >
-                <IconGitHub />
+             <FontAwesomeIcon icon={faGithub} /> 
               </a>
               <a
                 href={`https://${personalInfo.linkedin}`}
@@ -581,13 +576,13 @@ export default function Portfolio() {
                 rel="noopener noreferrer"
                 className="text-slate-300 hover:text-white"
               >
-                <IconLinkedIn />
+                <FontAwesomeIcon icon={faLinkedin} /> 
               </a>
               <a
                 href={`mailto:${personalInfo.email}`}
                 className="text-slate-300 hover:text-white"
               >
-                <IconMail />
+                <FontAwesomeIcon icon={faEnvelope} />
               </a>
             </div>
           </div>
