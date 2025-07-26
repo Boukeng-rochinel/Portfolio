@@ -1,165 +1,113 @@
-import { useState } from "react";
-import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState, useEffect } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Typography,
+  Container,
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  List,
+  ListItem,
+  IconButton,
+  Drawer,
+  Link,
+  TextField,
+  Chip,
+  useMediaQuery,
+  useTheme,
+  Dialog,         // Import Dialog
+  DialogTitle,    // Import DialogTitle
+  DialogContent,  // Import DialogContent
+  DialogActions,  // Import DialogActions
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import EmailIcon from "@mui/icons-material/Email";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CodeIcon from '@mui/icons-material/Code';
+import DevicesIcon from '@mui/icons-material/Devices';
+import ComputerIcon from '@mui/icons-material/Computer';
+import ConstructionIcon from '@mui/icons-material/Construction';
 
-// Import specific icons from the respective packages
-import { faUser, faEnvelope, faCog } from '@fortawesome/free-solid-svg-icons'; // For solid icons
-import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-
-// Custom SVG icons as components
-const IconGitHub = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-  </svg>
-);
-
-const IconLinkedIn = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-    <rect x="2" y="9" width="4" height="12"></rect>
-    <circle cx="4" cy="4" r="2"></circle>
-  </svg>
-);
-
-const IconMail = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-    <polyline points="22,6 12,13 2,6"></polyline>
-  </svg>
-);
-
-const IconMenu = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
-  </svg>
-);
-
-const IconX = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </svg>
-);
-
-const IconExternalLink = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-    <polyline points="15 3 21 3 21 9"></polyline>
-    <line x1="10" y1="14" x2="21" y2="3"></line>
-  </svg>
-);
-
-const IconChevronRight = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="9 18 15 12 9 6"></polyline>
-  </svg>
-);
+// For scroll animation/visibility
+import { useInView } from "react-intersection-observer";
+import { Slide, Fade } from "@mui/material";
 
 export default function Portfolio() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  // Sample data - replace with your own
+  // State for the project detail dialog
+  const [openProjectDialog, setOpenProjectDialog] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Intersection Observer for active section highlighting
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const sections = document.querySelectorAll("section");
+    sections.forEach((section) => observer.observe(section));
+
+    return () => sections.forEach((section) => observer.unobserve(section));
+  }, []);
+
   const personalInfo = {
     name: "Boukeng Rochinel",
     title: "Full Stack Developer",
     description:
-      "I build exceptional digital experiences with modern technologies. Focused on creating intuitive, responsive web applications that solve real problems.",
-    bio: "With over 5 years of experience in web development, I specialize in React, Node.js, and modern frontend frameworks. I'm passionate about clean code, user experience, and continuous learning. When not coding, you can find me hiking, reading sci-fi novels, or experimenting with new technologies.",
+      "I build exceptional digital experiences with modern technologies. Focused on creating intuitive, responsive web applications and mobile applications that solve real problems.",
+    bio: "With over 2 years of experience in web development, I specialize in React, Flutter, Node.js, and modern frontend frameworks. I'm passionate about clean code, user experience, and continuous learning. When not coding, you can find me hiking, reading sci-fi novels, or experimenting with new technologies.",
     location: "Douala, Cameroon",
     email: "boukengrochinel15@gmail.com",
     github: "https://github.com/Boukeng-rochinel",
-    linkedin: "linkedin.com/in/alexjohnson",
+    linkedin: "https://www.linkedin.com/in/nash-leo/",
+    profilePicture: "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753561380/IMG_20250515_080650_m8yoat.jpg" // Light green placeholder
   };
 
   const skills = [
     {
-      name: "Web development",
-      techs: ["React", "TypeScript", "Flutter", "Node.js", "Express", "MongoDB"],
+      name: "Frontend Development",
+      icon: <CodeIcon sx={{ fontSize: { xs: 32, md: 40 }, color: 'primary.main' }} />,
+      techs: ["React", "TypeScript", "Next.js", "Material-UI", "Tailwind CSS (concept only)"], // Added Material-UI, clarified Tailwind
+    },
+    {
+      name: "Backend Development",
+      icon: <ComputerIcon sx={{ fontSize: { xs: 32, md: 40 }, color: 'primary.main' }} />,
+      techs: ["Node.js", "Express", "MongoDB", "PostgreSQL", "Firebase"],
     },
     {
       name: "Mobile Development",
-      techs: ["Flutter", "Node.js", "PostgreSQL","Firebase"],
+      icon: <DevicesIcon sx={{ fontSize: { xs: 32, md: 40 }, color: 'primary.main' }} />,
+      techs: ["Flutter", "Dart", "React Native"],
     },
     {
-      name: "AI (Artificial Intelligence)",
-      techs: ["Python", "scikit-learn"],
+      name: "AI & Data Science",
+      icon: <Typography component="span" sx={{ fontSize: { xs: 32, md: 40 } }} role="img" aria-label="brain">🧠</Typography>,
+      techs: ["Python", "scikit-learn", "Pandas"],
     },
     {
-      name: "Tools",
-      techs: ["Git", "Docker", "AWS", "Jest", "GitHub Actions"],
+      name: "Tools & DevOps",
+      icon: <ConstructionIcon sx={{ fontSize: { xs: 32, md: 40 }, color: 'primary.main' }} />,
+      techs: ["Git", "Docker", "AWS", "Jest", "GitHub Actions", "Nginx"],
     },
   ];
 
@@ -167,30 +115,58 @@ export default function Portfolio() {
     {
       title: "IGwork",
       description:
-        "a freelancing platform designed specifically for Cameroon. The platform aims to connect skilled professionals with job providers while addressing key challenges such as payment restrictions, trust issues, and high service fees on global platforms.",
+        "A freelancing platform designed specifically for Cameroon. The platform aims to connect skilled professionals with job providers while addressing key challenges such as payment restrictions, trust issues, and high service fees on global platforms.",
       techs: ["React", "Node.js", "MongoDB", "Fapship"],
-      link: "#",
+      githubLink: "https://github.com/Boukeng-rochinel/IGwork", // Example GitHub link
+      liveLink: "https://igwork-1.onrender.com/", // Example Live link
+      image: "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753558945/Screenshot_from_2025-07-26_20-33-42_emzouz.png",
+      sampleImages: [
+        "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753558945/Screenshot_from_2025-07-26_20-33-58_zordwi.png",
+        "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753558945/Screenshot_from_2025-07-26_20-33-42_emzouz.png",
+        "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753558945/Screenshot_from_2025-07-26_20-34-10_cmpnc7.png",
+      ]
     },
     {
       title: "Car Fault Diagnosis APP",
       description:
         "A mobile application that uses machine learning to diagnose car faults based on dashboard warning lights and symptoms. It provides users with a list of possible issues and recommended actions.",
       techs: ["Flutter", "Node.js", "Firebase", "Dart"],
-      link: "#",
+      githubLink: "https://github.com/Boukeng-rochinel/CarDiagnosisApp",
+      liveLink: null, // No live demo
+      image: "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753560056/autofix_car1_fly0jk.jpg",
+      sampleImages: [
+        "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753560057/autofix_car5_r1mkfj.jpg",
+        "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753560056/autofix_car2_t7sq97.jpg",
+        "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753560056/autofix_car3_w1e5eg.jpg",
+        "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753560057/autofix_car4_jfs4pa.jpg",
+
+      ]
     },
     {
       title: "Task Management Dashboard",
       description:
-        "Real-time collaborative task management system with drag-and-drop interface and team permissions.",
-      techs: ["Next.js", "Firebase", "Tailwind CSS", "React DnD"],
-      link: "#",
+        "Real-time collaborative task management system with drag-and-drop interface and team permissions. Features user authentication and role-based access control.",
+      techs: ["Next.js", "Firebase", "Material-UI", "React DnD"],
+      githubLink: "https://github.com/Boukeng-rochinel/TaskDashboard",
+      liveLink: "https://task-dashboard-demo.vercel.app/",
+      image: "https://via.placeholder.com/800x500/3357FF/FFFFFF?text=Task+Dashboard+Screenshot+1",
+      sampleImages: [
+        "https://via.placeholder.com/800x500/3357FF/FFFFFF?text=Task+Dashboard+Screenshot+1",
+        "https://via.placeholder.com/800x500/3357FF/FFFFFF?text=Task+Dashboard+Screenshot+2",
+      ]
     },
     {
-      title: "Electricity Management and monitoring System for cameroon",
+      title: "Electricity Management and Monitoring System for Cameroon",
       description:
-        "A mobile application that allows users to monitor and manage their electricity consumption, pay bills, and receive notifications about outages.",
-      techs: ["React Native", "Node.js", "Postgrel", "Express"],
-      link: "#",
+        "A mobile application that allows users to monitor and manage their electricity consumption, pay bills, and receive notifications about outages. Integrates with local payment gateways.",
+      techs: ["React Native", "Node.js", "PostgreSQL", "Express"],
+      githubLink: "https://github.com/Boukeng-rochinel/ElectricityMonitor",
+      liveLink: null,
+      image: "https://via.placeholder.com/800x500/FF33CC/FFFFFF?text=Electricity+Monitor+Screenshot+1",
+      sampleImages: [
+        "https://via.placeholder.com/800x500/FF33CC/FFFFFF?text=Electricity+Monitor+Screenshot+1",
+        "https://via.placeholder.com/800x500/FF33CC/FFFFFF?text=Electricity+Monitor+Screenshot+2",
+      ]
     },
   ];
 
@@ -199,401 +175,653 @@ export default function Portfolio() {
       company: "Myle-Africa",
       role: "Intern Full Stack Developer",
       period: "2025",
-      achievements:
-        [
-        "Worked on a constructing a mailserver using dovecot and postfix and integrating it with a webmail client",
-        "Architected new component library used across 5 products",
-        "Added some security features to the mailserver like fail2ban and fail2web, spamassassin",
-        "Implemented a new feature that allows users to send and receive emails using their own domain names",
-        "Collaborated with the team to design and implement a new feature that allows users to manage their email accounts using a web interface",
-
+      achievements: [
+        "Constructed a mail server using Dovecot and Postfix, integrating it with a webmail client.",
+        "Architected a new component library that was adopted across 5 distinct products.",
+        "Enhanced mail server security by implementing fail2ban, fail2web, and SpamAssassin.",
+        "Developed a feature enabling users to send and receive emails using their custom domain names.",
+        "Collaborated with the team to design and implement a web interface for managing email accounts.",
       ],
     },
-    
   ];
 
-  const scrollToSection = (section) => {
-    setActiveSection(section);
+  const handleDrawerToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const scrollToSection = (sectionId) => {
+    setActiveSection(sectionId);
     setMobileMenuOpen(false);
-    document.getElementById(section).scrollIntoView({ behavior: "smooth" });
+    document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+  };
+
+  const navItems = [
+    "home",
+    "about",
+    "skills",
+    "projects",
+    "experience",
+    "contact",
+  ];
+
+  // Functions to handle project dialog
+  const handleOpenProjectDialog = (project) => {
+    setSelectedProject(project);
+    setOpenProjectDialog(true);
+  };
+
+  const handleCloseProjectDialog = () => {
+    setOpenProjectDialog(false);
+    setSelectedProject(null);
+  };
+
+  // Helper for animated sections using react-intersection-observer and MUI transitions
+  const AnimatedSection = ({ children, id, direction = 'up', threshold = 0.1 }) => {
+    const { ref, inView } = useInView({
+      triggerOnce: true,
+      threshold: threshold,
+    });
+
+    return (
+      <Box id={id} ref={ref} sx={{ py: { xs: 8, md: 10 } }}>
+        <Slide direction={direction} in={inView} mountOnEnter unmountOnExit timeout={1000}>
+          <Box>{children}</Box>
+        </Slide>
+      </Box>
+    );
+  };
+
+  const AnimatedContent = ({ children, delay = 0 }) => {
+    const { ref, inView } = useInView({
+      triggerOnce: true,
+      threshold: 0.1,
+    });
+    return (
+      <Box ref={ref}>
+        <Fade in={inView} style={{ transitionDelay: `${delay}ms` }} timeout={1000}>
+          <Box>{children}</Box>
+        </Fade>
+      </Box>
+    );
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800">
+    <Box sx={{ backgroundColor: 'grey.50', minHeight: '100vh' }}>
       {/* Navigation */}
-      <nav className="sticky top-0 bg-white shadow-sm z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="#" className="text-xl font-bold text-indigo-600">
-            {personalInfo.name}
-          </a>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
-            {[
-              "home",
-              "about",
-              "skills",
-              "projects",
-              "experience",
-              "contact",
-            ].map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollToSection(item)}
-                className={`capitalize ${
-                  activeSection === item
-                    ? "text-indigo-600 font-medium"
-                    : "text-slate-600 hover:text-indigo-500"
-                }`}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-
-          {/* Mobile Navigation Toggle */}
-          <button
-            className="md:hidden text-slate-800"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      <AppBar position="sticky" sx={{ bgcolor: 'white', boxShadow: 3 }}>
+        <Toolbar>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, color: 'primary.main', fontWeight: 'bold' }}
           >
-            {mobileMenuOpen ? <IconX /> : <IconMenu />}
-          </button>
-        </div>
+            <Link
+              href="#"
+              underline="none"
+              color="inherit"
+              onClick={() => scrollToSection("home")}
+            >
+              {personalInfo.name}
+            </Link>
+          </Typography>
 
-        {/* Mobile Navigation Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-white py-4 px-4 border-t border-slate-200">
-            <div className="flex flex-col space-y-4">
-              {[
-                "home",
-                "about",
-                "skills",
-                "projects",
-                "experience",
-                "contact",
-              ].map((item) => (
-                <button
+          {!isMobile ? (
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              {navItems.map((item) => (
+                <Button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className={`capitalize py-2 px-4 rounded-md text-left ${
-                    activeSection === item
-                      ? "bg-indigo-50 text-indigo-600 font-medium"
-                      : "text-slate-600 hover:bg-slate-100"
-                  }`}
+                  sx={{
+                    color: activeSection === item ? "primary.main" : "text.secondary",
+                    textTransform: 'capitalize',
+                    fontWeight: activeSection === item ? 'bold' : 'normal',
+                    position: 'relative', // For underline effect
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      width: activeSection === item ? '100%' : '0%',
+                      height: '2px',
+                      bottom: 0,
+                      left: 0,
+                      backgroundColor: 'primary.main',
+                      transition: 'width 0.3s ease-in-out',
+                    },
+                    '&:hover::after': {
+                      width: '100%',
+                    },
+                    "&:hover": {
+                      color: "primary.main",
+                      bgcolor: 'transparent'
+                    }
+                  }}
                 >
                   {item}
-                </button>
+                </Button>
               ))}
-            </div>
-          </div>
-        )}
-      </nav>
+            </Box>
+          ) : (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ color: 'text.primary' }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      {/* Mobile Navigation Drawer */}
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
+        }}
+      >
+        <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+          <IconButton onClick={handleDrawerToggle} sx={{ position: 'absolute', right: 8, top: 8 }}>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ my: 2, color: 'primary.main', fontWeight: 'bold' }}>
+            {personalInfo.name}
+          </Typography>
+          <List>
+            {navItems.map((item) => (
+              <ListItem key={item} disablePadding>
+                <Button
+                  fullWidth
+                  onClick={() => scrollToSection(item)}
+                  sx={{
+                    textAlign: "center",
+                    textTransform: 'capitalize',
+                    py: 1.5,
+                    color: activeSection === item ? "primary.main" : "text.primary",
+                    fontWeight: activeSection === item ? 'bold' : 'normal',
+                    bgcolor: activeSection === item ? 'primary.light' : 'transparent',
+                    "&:hover": {
+                      bgcolor: 'grey.100'
+                    }
+                  }}
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </Button>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
 
       {/* Hero Section */}
-      <section
-        id="home"
-        className="py-20 md:py-32 bg-gradient-to-br from-indigo-50 to-slate-100"
-      >
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-indigo-900">
-              Hi, I'm {personalInfo.name}
-            </h1>
-            <h2 className="text-2xl md:text-3xl font-medium mb-6 text-indigo-600">
-              {personalInfo.title}
-            </h2>
-            <p className="text-lg md:text-xl text-slate-700 mb-10">
-              {personalInfo.description}
-            </p>
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={() => scrollToSection("projects")}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-md flex items-center"
-              >
-                View My Work <IconChevronRight className="ml-1" />
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="border border-indigo-600 text-indigo-600 hover:bg-indigo-50 font-medium px-6 py-3 rounded-md"
-              >
-                Contact Me
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AnimatedSection id="home" direction="right" threshold={0.3}>
+        <Container maxWidth="lg" sx={{ py: { xs: 8, md: 16 }, textAlign: { xs: 'center', md: 'left' } }}>
+          <Grid container spacing={4} alignItems="center" justifyContent="center">
+            <Grid  item xs={12} md={6}>
+              <AnimatedContent>
+                <Typography variant={isMobile ? "h4" : "h3"} component="h1" gutterBottom sx={{ fontWeight: 'extrabold', color: 'primary.dark' }}>
+                  Hi, I'm <Typography component="span" variant="inherit" color="primary.main">{personalInfo.name}</Typography>
+                </Typography>
+                <Typography variant={isMobile ? "h6" : "h5"} component="h2" gutterBottom sx={{ color: 'primary.main', fontWeight: 'medium' }}>
+                  {personalInfo.title}
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'text.secondary', mb: 4, fontSize: { xs: '1rem', md: '1.15rem' } }}>
+                  {personalInfo.description}
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: { xs: 'center', md: 'flex-start' }, gap: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    endIcon={<ChevronRightIcon />}
+                    onClick={() => scrollToSection("projects")}
+                    sx={{ borderRadius: 8, boxShadow: 3, "&:hover": { transform: 'scale(1.05)', transition: '0.3s' } }}
+                  >
+                    View My Work
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="large"
+                    onClick={() => scrollToSection("contact")}
+                    sx={{ borderRadius: 8, boxShadow: 3, "&:hover": { transform: 'scale(1.05)', transition: '0.3s' } }}
+                  >
+                    Contact Me
+                  </Button>
+                </Box>
+              </AnimatedContent>
+            </Grid>
+            <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 4, md: 0 } }}>
+              <AnimatedContent delay={300}>
+                <Box
+                  component="img"
+                  src={personalInfo.profilePicture}
+                  alt={personalInfo.name}
+                  sx={{
+                    width: { xs: 200, sm: 250, md: 300 },
+                    height: { xs: 200, sm: 250, md: 300 },
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    boxShadow: 8,
+                    border: '4px solid',
+                    borderColor: 'primary.light',
+                  }}
+                />
+              </AnimatedContent>
+            </Grid>
+          </Grid>
+        </Container>
+      </AnimatedSection>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-slate-800">
-            About Me
-          </h2>
-          <div className="max-w-3xl mx-auto">
-            <p className="text-lg text-slate-700 mb-6">{personalInfo.bio}</p>
-            <div className="bg-slate-50 p-6 rounded-lg flex flex-col md:flex-row md:items-center justify-between">
-              <div className="mb-4 md:mb-0">
-                <p className="font-medium text-slate-800">
-                  📍 {personalInfo.location}
-                </p>
-              </div>
-              <div className="flex space-x-6">
-              <a
-                href={`https://${personalInfo.github}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-300 hover:text-white"
-              >
-             <FontAwesomeIcon icon={faGithub} /> 
-              </a>
-              <a
-                href={`https://${personalInfo.linkedin}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-300 hover:text-white"
-              >
-                <FontAwesomeIcon icon={faLinkedin} /> 
-              </a>
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="text-slate-300 hover:text-white"
-              >
-                <FontAwesomeIcon icon={faEnvelope} />
-              </a>
-            </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AnimatedSection id="about" direction="right" threshold={0.3}>
+        <Container maxWidth="md" sx={{ py: { xs: 8, md: 10 }, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          <AnimatedContent>
+            <Typography variant={isMobile ? "h5" : "h4"} component="h2" align="center" gutterBottom sx={{ fontWeight: 'bold', mb: 6, color: 'text.primary' }}>
+              About Me
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'text.secondary', mb: 4, lineHeight: 1.8, fontSize: { xs: '1rem', md: '1.1rem' } }}>
+              {personalInfo.bio}
+            </Typography>
+            <Box sx={{
+              bgcolor: 'grey.100',
+              p: 3,
+              borderRadius: 1,
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              justifyContent: 'space-between',
+              alignItems: { xs: 'flex-start', md: 'center' },
+              gap: { xs: 2, md: 0 }
+            }}>
+              <Typography variant="body1" sx={{ fontWeight: 'medium', color: 'text.primary', display: 'flex', alignItems: 'center' }}>
+                <LocationOnIcon sx={{ mr: 1, color: 'primary.main', fontSize: { xs: 20, md: 24 } }} /> {personalInfo.location}
+              </Typography>
+              <Box sx={{ display: 'flex', gap: { xs: 2, md: 3 }, fontSize: { xs: '1.5rem', md: '2rem' } }}>
+                <Link href={personalInfo.github} target="_blank" rel="noopener noreferrer" color="inherit" sx={{ '&:hover': { color: 'primary.main', transform: 'scale(1.2)', transition: '0.3s' } }}>
+                  <GitHubIcon fontSize="inherit" />
+                </Link>
+                <Link href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" color="inherit" sx={{ '&:hover': { color: 'primary.main', transform: 'scale(1.2)', transition: '0.3s' } }}>
+                  <LinkedInIcon fontSize="inherit" />
+                </Link>
+                <Link href={`mailto:${personalInfo.email}`} color="inherit" sx={{ '&:hover': { color: 'primary.main', transform: 'scale(1.2)', transition: '0.3s' } }}>
+                  <EmailIcon fontSize="inherit" />
+                </Link>
+              </Box>
+            </Box>
+          </AnimatedContent>
+        </Container>
+      </AnimatedSection>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-20 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-slate-800">
-            Skills
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      {/* Skills Section - Redesigned with MUI Grid and Cards */}
+      <AnimatedSection id="skills" direction="left" threshold={0.2}>
+        <Container maxWidth="lg" sx={{ py: { xs: 8, md: 10 } }}>
+          <Typography variant={isMobile ? "h5" : "h4"} component="h2" align="center" gutterBottom sx={{ fontWeight: 'bold', mb: 6, color: 'text.primary' }}>
+            My Expertise
+          </Typography>
+          <Grid container spacing={4} justifyContent="center">
             {skills.map((skillGroup, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold mb-4 text-indigo-600">
-                  {skillGroup.name}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {skillGroup.techs.map((tech, techIndex) => (
-                    <span
-                      key={techIndex}
-                      className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-sm"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <AnimatedContent delay={index * 150}>
+                  <Card
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      borderRadius: 2,
+                      boxShadow: 4,
+                      border: '1px solid',
+                      borderColor: 'primary.light',
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: 6,
+                        transition: '0.3s',
+                      },
+                      p: 3,
+                    }}
+                  >
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        {skillGroup.icon}
+                        <Typography variant={isMobile ? "h6" : "h5"} component="h3" sx={{ ml: 2, fontWeight: 'medium', color: 'primary.dark' }}>
+                          {skillGroup.name}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                        {skillGroup.techs.map((tech, techIndex) => (
+                          <Chip
+                            key={techIndex}
+                            label={tech}
+                            color="primary"
+                            variant="outlined"
+                            size="small"
+                            sx={{
+                              fontWeight: 'medium',
+                              bgcolor: 'primary.light',
+                              color: 'primary.dark',
+                              borderColor: 'primary.main',
+                              '&:hover': {
+                                bgcolor: 'primary.main',
+                                color: 'white',
+                              },
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </AnimatedContent>
+              </Grid>
             ))}
-          </div>
-        </div>
-      </section>
+          </Grid>
+        </Container>
+      </AnimatedSection>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-slate-800">
-            Projects
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <AnimatedSection id="projects" direction="right" threshold={0.2}>
+        <Container maxWidth="lg" sx={{ py: { xs: 8, md: 10 }, bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+          <Typography variant={isMobile ? "h5" : "h4"} component="h2" align="center" gutterBottom sx={{ fontWeight: 'bold', mb: 6, color: 'text.primary' }}>
+            Featured Projects
+          </Typography>
+          <Grid container spacing={4} justifyContent="center">
             {projects.map((project, index) => (
-              <div
-                key={index}
-                className="border border-slate-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
-              >
-                <div className="bg-slate-100 h-48"></div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 text-slate-800">
-                    {project.title}
-                  </h3>
-                  <p className="text-slate-600 mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.techs.map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="bg-slate-100 text-slate-700 px-2 py-1 rounded text-xs"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <a
-                    href={project.link}
-                    className="text-indigo-600 font-medium flex items-center hover:text-indigo-800"
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <AnimatedContent delay={index * 150}>
+                  <Card
+                    sx={{
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      borderRadius: 2,
+                      boxShadow: 4,
+                      cursor: 'pointer', // Indicate clickable
+                      '&:hover': {
+                        transform: 'translateY(-8px)',
+                        boxShadow: 6,
+                        transition: '0.3s',
+                      },
+                    }}
+                    onClick={() => handleOpenProjectDialog(project)} // Open dialog on click
                   >
-                    View Project <IconExternalLink className="ml-1" />
-                  </a>
-                </div>
-              </div>
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={project.image}
+                      alt={project.title}
+                      sx={{ objectFit: 'cover' }}
+                    />
+                    <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                      <Typography variant={isMobile ? "h6" : "h5"} component="h3" gutterBottom sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+                        {project.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2, minHeight: 60, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
+                        {project.description}
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
+                        {project.techs.map((tech, techIndex) => (
+                          <Chip key={techIndex} label={tech} size="small" sx={{ bgcolor: 'grey.200', color: 'text.secondary', fontWeight: 'medium' }} />
+                        ))}
+                      </Box>
+                      {/* Removed direct link here, handled by dialog */}
+                    </CardContent>
+                  </Card>
+                </AnimatedContent>
+              </Grid>
             ))}
-          </div>
-        </div>
-      </section>
+          </Grid>
+        </Container>
+      </AnimatedSection>
 
       {/* Experience Section */}
-      <section id="experience" className="py-20 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-slate-800">
-            Experience
-          </h2>
-          <div className="max-w-3xl mx-auto">
+      <AnimatedSection id="experience" direction="left" threshold={0.2}>
+        <Container maxWidth="md" sx={{ py: { xs: 8, md: 10 } }}>
+          <Typography variant={isMobile ? "h5" : "h4"} component="h2" align="center" gutterBottom sx={{ fontWeight: 'bold', mb: 6, color: 'text.primary' }}>
+            Work Experience
+          </Typography>
+          <Box>
             {experience.map((job, index) => (
-              <div
-                key={index}
-                className={`bg-white p-6 rounded-lg shadow-sm mb-6 ${
-                  index !== experience.length - 1
-                    ? "border-l-4 border-indigo-500"
-                    : ""
-                }`}
-              >
-                <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
-                  <h3 className="text-xl font-semibold text-slate-800">
-                    {job.role}
-                  </h3>
-                  <div className="flex items-center mt-2 md:mt-0">
-                    <span className="text-indigo-600 font-medium">
-                      {job.company}
-                    </span>
-                    <span className="mx-2 text-slate-400">•</span>
-                    <span className="text-slate-500">{job.period}</span>
-                  </div>
-                </div>
-                <p className="text-slate-700 mb-4">{job.description}</p>
-                <ul className="list-disc list-inside text-slate-600 pl-2">
-                  {job.achievements.map((achievement, achIndex) => (
-                    <li key={achIndex} className="mb-1">
-                      {achievement}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <AnimatedContent key={index} delay={index * 150}>
+                <Card
+                  sx={{
+                    mb: 4,
+                    p: 4,
+                    borderRadius: 2,
+                    boxShadow: 3,
+                    borderLeft: '4px solid',
+                    borderColor: 'primary.main',
+                    bgcolor: 'background.paper',
+                    '&:hover': {
+                      boxShadow: 4,
+                      transition: '0.3s',
+                    },
+                  }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'center' }, mb: 2 }}>
+                    <Typography variant={isMobile ? "h6" : "h5"} component="h3" sx={{ fontWeight: 'medium', color: 'text.primary' }}>
+                      {job.role}
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: { xs: 1, md: 0 }, color: 'text.secondary' }}>
+                      <Typography variant="body1" component="span" sx={{ fontWeight: 'medium', color: 'primary.main' }}>
+                        {job.company}
+                      </Typography>
+                      <Typography variant="body1" component="span" sx={{ mx: 1 }}>•</Typography>
+                      <Typography variant="body1" component="span">{job.period}</Typography>
+                    </Box>
+                  </Box>
+                  <List sx={{ listStyleType: 'disc', pl: 2 }}>
+                    {job.achievements.map((achievement, achIndex) => (
+                      <ListItem key={achIndex} sx={{ display: 'list-item', py: 0.5 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>{achievement}</Typography>
+                      </ListItem>
+                    ))}
+                  </List>
+                </Card>
+              </AnimatedContent>
             ))}
-          </div>
-        </div>
-      </section>
+          </Box>
+        </Container>
+      </AnimatedSection>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-indigo-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-slate-800">
+      <AnimatedSection id="contact" direction="right" threshold={0.3}>
+        <Container maxWidth="sm" sx={{ py: { xs: 8, md: 10 }, bgcolor: 'primary.light', borderRadius: 2, boxShadow: 1 }}>
+          <Typography variant={isMobile ? "h5" : "h4"} component="h2" align="center" gutterBottom sx={{ fontWeight: 'bold', mb: 6, color: 'primary.dark' }}>
             Get In Touch
-          </h2>
-          <div className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-sm">
-            <div className="mb-8 text-center">
-              <p className="text-slate-700 mb-4">
+          </Typography>
+          <AnimatedContent>
+            <Box sx={{ bgcolor: 'background.paper', p: { xs: 3, md: 5 }, borderRadius: 2, boxShadow: 4, textAlign: 'center' }}>
+              <Typography variant="body1" sx={{ color: 'text.secondary', mb: 4, fontSize: { xs: '1rem', md: '1.1rem' } }}>
                 I'm currently open for new opportunities. Feel free to reach out
-                if you'd like to connect!
-              </p>
-              <a
+                if you'd like to connect or discuss a project!
+              </Typography>
+              <Link
                 href={`mailto:${personalInfo.email}`}
-                className="text-lg font-medium text-indigo-600 hover:text-indigo-800"
+                color="primary"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textDecoration: 'none',
+                  fontSize: { xs: '1rem', md: '1.25rem' },
+                  fontWeight: 'medium',
+                  mb: 4,
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  },
+                }}
               >
-                {personalInfo.email}
-              </a>
-            </div>
+                <EmailIcon sx={{ mr: 1 }} /> {personalInfo.email}
+              </Link>
 
-            <form className="space-y-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-slate-700 mb-1"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
+              <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <TextField
                   id="name"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Your name"
+                  label="Name"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1 } }}
                 />
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-slate-700 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
+                <TextField
                   id="email"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Your email"
+                  label="Email"
+                  type="email"
+                  variant="outlined"
+                  fullWidth
+                  sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1 } }}
                 />
-              </div>
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-slate-700 mb-1"
-                >
-                  Message
-                </label>
-                <textarea
+                <TextField
                   id="message"
-                  rows={4}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Your message"
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
+                  label="Message"
+                  multiline
+                  rows={5}
+                  variant="outlined"
+                  fullWidth
+                  sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1 } }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  sx={{ py: 1.5, borderRadius: 8, boxShadow: 3, "&:hover": { transform: 'scale(1.01)', transition: '0.3s' } }}
+                >
+                  Send Message
+                </Button>
+              </Box>
+            </Box>
+          </AnimatedContent>
+        </Container>
+      </AnimatedSection>
 
       {/* Footer */}
-      <footer className="bg-slate-800 text-slate-300 py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <h3 className="text-xl font-bold text-white">
+      <Box component="footer" sx={{ bgcolor: 'grey.900', color: 'grey.300', py: 6 }}>
+        <Container maxWidth="lg">
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', textAlign: { xs: 'center', md: 'left' } }}>
+            <Box sx={{ mb: { xs: 3, md: 0 } }}>
+              <Typography variant="h6" component="h3" sx={{ fontWeight: 'bold', color: 'white' }}>
                 {personalInfo.name}
-              </h3>
-              <p className="text-slate-400">{personalInfo.title}</p>
-            </div>
-            <div className="flex space-x-6">
-              <a
-                href={`https://${personalInfo.github}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-300 hover:text-white"
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'grey.500' }}>{personalInfo.title}</Typography>
+            </Box>
+            <Box sx={{ display: 'flex', gap: 3, fontSize: { xs: '1.75rem', md: '2rem' } }}>
+              <Link href={personalInfo.github} target="_blank" rel="noopener noreferrer" color="inherit" sx={{ '&:hover': { color: 'white', transform: 'scale(1.2)', transition: '0.3s' } }}>
+                <GitHubIcon fontSize="inherit" />
+              </Link>
+              <Link href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" color="inherit" sx={{ '&:hover': { color: 'white', transform: 'scale(1.2)', transition: '0.3s' } }}>
+                <LinkedInIcon fontSize="inherit" />
+              </Link>
+              <Link href={`mailto:${personalInfo.email}`} color="inherit" sx={{ '&:hover': { color: 'white', transform: 'scale(1.2)', transition: '0.3s' } }}>
+                <EmailIcon fontSize="inherit" />
+              </Link>
+            </Box>
+          </Box>
+          <Typography variant="body2" align="center" sx={{ mt: 4, color: 'grey.500' }}>
+            © {new Date().getFullYear()} {personalInfo.name}. All rights reserved.
+          </Typography>
+        </Container>
+      </Box>
+
+      {/* Project Detail Dialog */}
+      <Dialog
+        open={openProjectDialog}
+        onClose={handleCloseProjectDialog}
+        maxWidth="md"
+        fullWidth
+        scroll="paper" // Content can scroll if too long
+      >
+        {selectedProject && (
+          <Box>
+            <DialogTitle sx={{ m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: 'primary.dark' }}>
+                {selectedProject.title}
+              </Typography>
+              <IconButton
+                aria-label="close"
+                onClick={handleCloseProjectDialog}
+                sx={{
+                  color: (theme) => theme.palette.grey[500],
+                }}
               >
-             <FontAwesomeIcon icon={faGithub} /> 
-              </a>
-              <a
-                href={`https://${personalInfo.linkedin}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-300 hover:text-white"
-              >
-                <FontAwesomeIcon icon={faLinkedin} /> 
-              </a>
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="text-slate-300 hover:text-white"
-              >
-                <FontAwesomeIcon icon={faEnvelope} />
-              </a>
-            </div>
-          </div>
-          <div className="mt-8 text-center text-slate-400 text-sm">
-            <p>
-              © {new Date().getFullYear()} {personalInfo.name}. All rights
-              reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+            <DialogContent dividers sx={{ p: 0 }}> {/* No padding here, handle in inner Box */}
+              <Box sx={{ width: '100%', height: { xs: 200, sm: 300, md: 400 }, overflow: 'hidden' }}>
+                <CardMedia
+                  component="img"
+                  image={selectedProject.image}
+                  alt={selectedProject.title}
+                  sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </Box>
+              <Box sx={{ p: { xs: 2, md: 4 } }}> {/* Inner padding for content */}
+                <Typography variant="body1" sx={{ mt: 2, mb: 3, lineHeight: 1.8, color: 'text.secondary' }}>
+                  {selectedProject.description}
+                </Typography>
+                <Typography variant="h6" sx={{ mb: 1, color: 'primary.main' }}>Technologies Used:</Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 3 }}>
+                  {selectedProject.techs.map((tech, index) => (
+                    <Chip key={index} label={tech} color="secondary" variant="filled" sx={{ fontWeight: 'medium' }} />
+                  ))}
+                </Box>
+
+                {selectedProject.sampleImages && selectedProject.sampleImages.length > 0 && (
+                  <Box sx={{ mt: 4 }}>
+                    <Typography variant="h6" sx={{ mb: 2, color: 'primary.main' }}>Sample Screenshots:</Typography>
+                    <Grid container spacing={2}>
+                      {selectedProject.sampleImages.map((imgSrc, index) => (
+                        <Grid item xs={12} sm={6} md={4} key={index}>
+                          <img
+                            src={imgSrc}
+                            alt={`${selectedProject.title} Sample ${index + 1}`}
+                            style={{ width: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Box>
+                )}
+              </Box>
+            </DialogContent>
+            <DialogActions sx={{ p: { xs: 2, md: 3 }, justifyContent: 'flex-start', gap: 2 }}>
+              {selectedProject.githubLink && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  href={selectedProject.githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<GitHubIcon />}
+                  sx={{ borderRadius: 8 }}
+                >
+                  GitHub
+                </Button>
+              )}
+              {selectedProject.liveLink && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  href={selectedProject.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<OpenInNewIcon />}
+                  sx={{ borderRadius: 8 }}
+                >
+                  Live Demo
+                </Button>
+              )}
+              <Button onClick={handleCloseProjectDialog} color="secondary" sx={{ borderRadius: 8 }}>
+                Close
+              </Button>
+            </DialogActions>
+          </Box>
+        )}
+      </Dialog>
+    </Box>
   );
 }
