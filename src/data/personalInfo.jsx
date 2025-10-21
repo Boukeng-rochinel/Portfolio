@@ -9,6 +9,6 @@ export const personalInfo = {
   location: "Douala, Cameroon",
   github: "https://github.com/Boukeng-rochinel",
   linkedin: "https://www.linkedin.com/in/nash-leo/",
-  cvLink: "https://drive.google.com/file/d/your-cv-id/view?usp=sharing",
+  cvLink: "https://drive.google.com/file/d/1Cq8vEsExiq7gwpJA2ioyE3Lx29jolc07/view?usp=drive_link",
   profileImage: "https://res.cloudinary.com/boukeng-rochinel/image/upload/v1753561380/IMG_20250515_080650_m8yoat.jpg"
 };
