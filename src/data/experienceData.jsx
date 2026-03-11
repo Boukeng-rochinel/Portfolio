@@ -1,5 +1,33 @@
 export const experience = [
   {
+    role: "Odoo Developer & System Administrator",
+    company: "Heverest",
+    period: "August 2025 - Present",
+    location: "Douala, Cameroon",
+    type: "Internship",
+    achievements: [
+      "Deploying, scaling, and maintaining Odoo 19 instances for enterprise clients",
+      "Customizing Odoo modules to meet specific business requirements",
+      "Managing server infrastructure and ensuring 99.9% uptime",
+      "Integrating Odoo with third-party systems and APIs",
+      "Providing technical support and training to clients",
+      "Configuring PostgreSQL databases for optimal performance",
+    ],
+    technologies: [
+      "Odoo 19",
+      "Python",
+      "PostgreSQL",
+      "Linux",
+      "Docker",
+      "XML",
+      "ERP",
+    ],
+    reference: {
+      name: "Heverest IT Team",
+      contact: "it@heverest.com",
+    },
+  },
+  {
     role: "Full Stack Developer Intern",
     company: "Myle-Africa",
     period: "2025",
@@ -10,13 +38,18 @@ export const experience = [
       "Developed reusable component library adopted across 5+ products, reducing development time by 40%",
       "Enhanced security with fail2ban, fail2web, and SpamAssassin implementation, reducing spam by 85%",
       "Created custom domain email system for enhanced user experience with 99.9% uptime",
-      "Implemented automated backup systems and monitoring tools",
-      "Collaborated with cross-functional teams in agile development environment"
     ],
-    technologies: ["Linux", "Postfix", "Dovecot", "JavaScript", "React", "Node.js"],
+    technologies: [
+      "Linux",
+      "Postfix",
+      "Dovecot",
+      "JavaScript",
+      "React",
+      "Node.js",
+    ],
     reference: {
       name: "Project Lead",
-      contact: "reference@myle-africa.com"
-    }
-  }
+      contact: "reference@myle-africa.com",
+    },
+  },
 ];

@@ -1,7 +1,17 @@
 import React from 'react';
-import { Web, Storage, Smartphone, Psychology, Cloud, DataObject } from "@mui/icons-material";
+import { Web, Storage, Smartphone, Psychology, Cloud, DataObject, Settings } from "@mui/icons-material";
 
 export const skills = [
+  {
+    category: "Odoo ERP",
+    icon: React.createElement(Settings, { sx: { fontSize: 40 } }),
+    technologies: ["Odoo 19", "Python", "XML", "PostgreSQL", "Odoo.sh", "Linux", "Docker"],
+    color: "#2E7D32",
+    description: "Expert in deploying, scaling, and maintaining Odoo 19 ERP for enterprise clients.",
+    proficiency: "Expert",
+    projects: 15,
+    years: 1
+  },
   {
     category: "Frontend Development",
     icon: React.createElement(Web, { sx: { fontSize: 40 } }),
@@ -16,7 +26,7 @@ export const skills = [
     category: "Backend Development",
     icon: React.createElement(Storage, { sx: { fontSize: 40 } }),
     technologies: ["Node.js", "Express", "MongoDB", "PostgreSQL", "Firebase", "REST APIs", "GraphQL"],
-    color: "#2E7D32",
+    color: "#1565C0",
     description: "Building robust server-side applications and APIs with scalable architectures.",
     proficiency: "Advanced",
     projects: 12,
@@ -51,15 +61,5 @@ export const skills = [
     proficiency: "Intermediate",
     projects: 10,
     years: 2
-  },
-  {
-    category: "Database Management",
-    icon: React.createElement(DataObject, { sx: { fontSize: 40 } }),
-    technologies: ["MongoDB", "PostgreSQL", "MySQL", "Redis", "Firestore", "Database Design"],
-    color: "#D32F2F",
-    description: "Designing and optimizing database schemas and queries for performance.",
-    proficiency: "Advanced",
-    projects: 15,
-    years: 3
   }
 ];

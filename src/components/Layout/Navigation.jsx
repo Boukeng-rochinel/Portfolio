@@ -1,153 +1,169 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
   Typography,
   Button,
   IconButton,
-  Dialog,
-  Box,
-  Switch,
-  FormControlLabel,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
   useMediaQuery,
-  useTheme
-} from '@mui/material';
-import {
-  Menu,
-  Close,
-  Fullscreen,
-  FullscreenExit
-} from '@mui/icons-material';
+  useTheme,
+  Box,
+} from "@mui/material";
+import { Menu, Close } from "@mui/icons-material";
 
-const Navigation = ({ 
-  navItems, 
-  scrollToSection, 
-  isFullscreen, 
-  toggleFullscreen, 
-  cursorEnabled, 
-  setCursorEnabled 
-}) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Navigation = ({ navItems, scrollToSection }) => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      <AppBar position="fixed" sx={{ 
-        background: 'rgba(10, 10, 10, 0.95)', 
-        backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.1)'
-      }}>
-        <Toolbar>
-          <Typography variant="h6" sx={{ 
-            flexGrow: 1, 
-            fontWeight: 'bold', 
-            background: 'linear-gradient(45deg, #1976d2, #21CBF3)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            color: 'transparent',
-            fontSize: '1.5rem'
-          }}>
+      <AppBar
+        position="fixed"
+        elevation={0}
+        sx={{
+          background: scrolled
+            ? "rgba(255, 255, 255, 0.98)"
+            : "rgba(255, 255, 255, 0.9)",
+          backdropFilter: scrolled ? "blur(10px)" : "none",
+          borderBottom: scrolled ? "1px solid #f0f0f0" : "none",
+          transition: "all 0.3s ease",
+        }}
+      >
+        <Toolbar
+          sx={{
+            justifyContent: "space-between",
+            maxWidth: 1200,
+            width: "100%",
+            mx: "auto",
+            px: { xs: 2, md: 4 },
+          }}
+        >
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 700,
+              color: "#1a1a1a",
+              letterSpacing: "-0.02em",
+              cursor: "pointer",
+            }}
+            onClick={() => scrollToSection("about")}
+          >
             BR
           </Typography>
-          
+
           {!isMobile ? (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               {navItems.map((item) => (
                 <Button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
                   sx={{
-                    color: 'white',
-                    textTransform: 'none',
-                    fontWeight: 'medium',
-                    fontSize: '1rem',
-                    '&:hover': {
-                      background: 'rgba(25, 118, 210, 0.1)',
-                      transform: 'translateY(-2px)'
-                    }
+                    color: "#666",
+                    textTransform: "none",
+                    fontWeight: 500,
+                    fontSize: "0.95rem",
+                    px: 2,
+                    py: 1,
+                    borderRadius: "8px",
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      color: "#1a1a1a",
+                      background: "#f5f5f5",
+                    },
                   }}
                 >
                   {item.name}
                 </Button>
               ))}
-              <IconButton onClick={toggleFullscreen} sx={{ color: '#21CBF3' }}>
-                {isFullscreen ? <FullscreenExit /> : <Fullscreen />}
-              </IconButton>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={cursorEnabled}
-                    onChange={(e) => setCursorEnabled(e.target.checked)}
-                    sx={{
-                      '& .MuiSwitch-switchBase.Mui-checked': {
-                        color: '#21CBF3',
-                      },
-                      '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                        backgroundColor: '#21CBF3',
-                      },
-                    }}
-                  />
-                }
-                label="Cursor"
-                sx={{ color: 'white', ml: 1 }}
-              />
             </Box>
           ) : (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <IconButton onClick={toggleFullscreen} sx={{ color: '#21CBF3' }}>
-                {isFullscreen ? <FullscreenExit /> : <Fullscreen />}
-              </IconButton>
-              <IconButton onClick={() => setMobileMenuOpen(true)} sx={{ color: 'white' }}>
-                <Menu />
-              </IconButton>
-            </Box>
+            <IconButton
+              onClick={() => setDrawerOpen(true)}
+              sx={{ color: "#1a1a1a" }}
+            >
+              <Menu />
+            </IconButton>
           )}
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Menu */}
-      <Dialog fullScreen open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} sx={{ zIndex: 9999 }}>
-        <Box sx={{ 
-          p: 2, 
-          background: 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%)', 
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-            <Typography variant="h6" sx={{ color: '#21CBF3', fontWeight: 'bold' }}>
-              Menu
-            </Typography>
-            <IconButton onClick={() => setMobileMenuOpen(false)} sx={{ color: 'white' }}>
-              <Close />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, flexGrow: 1, justifyContent: 'center' }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.id}
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        PaperProps={{
+          sx: {
+            background: "#ffffff",
+            width: "100%",
+            maxWidth: 300,
+          },
+        }}
+      >
+        <Box
+          sx={{
+            p: 3,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6" sx={{ color: "#1a1a1a", fontWeight: 600 }}>
+            Menu
+          </Typography>
+          <IconButton
+            onClick={() => setDrawerOpen(false)}
+            sx={{ color: "#1a1a1a" }}
+          >
+            <Close />
+          </IconButton>
+        </Box>
+        <List sx={{ px: 2 }}>
+          {navItems.map((item) => (
+            <ListItem key={item.id} disablePadding sx={{ mb: 1 }}>
+              <ListItemButton
                 onClick={() => {
                   scrollToSection(item.id);
-                  setMobileMenuOpen(false);
+                  setDrawerOpen(false);
                 }}
                 sx={{
-                  color: 'white',
-                  textTransform: 'none',
-                  fontSize: '1.5rem',
-                  py: 3,
-                  fontWeight: 'bold',
-                  '&:hover': {
-                    background: 'rgba(25, 118, 210, 0.1)'
-                  }
+                  borderRadius: "12px",
+                  py: 2,
+                  "&:hover": {
+                    background: "#f5f5f5",
+                  },
                 }}
               >
-                {item.name}
-              </Button>
-            ))}
-          </Box>
-        </Box>
-      </Dialog>
+                <ListItemText
+                  primary={item.name}
+                  primaryTypographyProps={{
+                    sx: {
+                      color: "#1a1a1a",
+                      fontWeight: 500,
+                      fontSize: "1.1rem",
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
     </>
   );
 };
